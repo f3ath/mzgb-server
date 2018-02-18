@@ -39,19 +39,6 @@ class Application
         $game->register($team);
     }
 
-    public function score(string $game_id, int $tour, string $team_id, array $score): void
-    {
-        $game = $this->getGame($game_id);
-        $team = $this->getTeam($team_id);
-        $game->score($team, $tour, $score);
-    }
-
-    public function getScoreBoard(string $game_id): array
-    {
-        $game = $this->getGame($game_id);
-        return array_map(new ScoreBoardRowToArrayMapper(), $game->toScoreBoard());
-    }
-
     private function getGame(string $game_id): Game
     {
         $game = $this->storage->getGame($game_id);
@@ -68,5 +55,18 @@ class Application
             return $team;
         }
         throw new \OutOfBoundsException();
+    }
+
+    public function score(string $game_id, int $tour, string $team_id, array $score): void
+    {
+        $game = $this->getGame($game_id);
+        $team = $this->getTeam($team_id);
+        $game->score($team, $tour, $score);
+    }
+
+    public function getScoreBoard(string $game_id): array
+    {
+        $game = $this->getGame($game_id);
+        return array_map(new ScoreBoardRowToArrayMapper(), $game->toScoreBoard());
     }
 }

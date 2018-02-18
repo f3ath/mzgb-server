@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace F3\MzgbServer\Game;
 
 use F3\MzgbServer\Game\Row;
+use F3\MzgbServer\Game\Score\CompareByRank;
+use F3\MzgbServer\Game\Score\HigherThan;
+use F3\MzgbServer\Game\Score\Score;
 
 class Game
 {
@@ -21,7 +24,7 @@ class Game
     private $date;
 
     /**
-     * @var TeamScore[]
+     * @var Score[]
      */
     private $scores = [];
 
@@ -39,7 +42,7 @@ class Game
 
     public function register(Team $team): void
     {
-        $this->scores[$team->toId()] = new TeamScore($team, $this);
+        $this->scores[$team->toId()] = new Score($team, $this);
     }
 
     public function score(Team $team, int $tour, array $points): void
@@ -47,9 +50,9 @@ class Game
         $this->scores[$team->toId()]->score($tour, $points);
     }
 
-    public function countScoresHigherThan(TeamScore $score): int
+    public function countScoresHigherThan(Score $score): int
     {
-        return count(array_filter($this->scores, new IsHigherThan($score)));
+        return count(array_filter($this->scores, new HigherThan($score)));
     }
 
     public function toScoreBoard(): array

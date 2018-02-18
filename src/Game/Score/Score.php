@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer\Game;
+namespace F3\MzgbServer\Game\Score;
 
-class TeamScore
+use F3\MzgbServer\Game\Game;
+use F3\MzgbServer\Game\Team;
+
+class Score
 {
     private $points = [];
     private $team;
@@ -25,14 +28,14 @@ class TeamScore
         return $this->points;
     }
 
-    public function total()
+    public function isHigherThan(Score $that): bool
     {
-        return array_sum($this->points);
+        return $this->toPointsTotal() > $that->toPointsTotal();
     }
 
-    public function isHigherThan(TeamScore $that): bool
+    public function toPointsTotal()
     {
-        return $this->total() > $that->total();
+        return array_sum($this->points);
     }
 
     public function toTeamName(): string
