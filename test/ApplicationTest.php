@@ -2,14 +2,20 @@
 
 namespace F3\MzgbServer\Test;
 
+use F3\MzgbServer\Storage;
 use PHPUnit\Framework\TestCase;
 use F3\MzgbServer\Application;
+
+class InMemoryStorage implements Storage
+{
+
+}
 
 class ApplicationTest extends TestCase
 {
     public function testFullGame()
     {
-        $app = new Application();
+        $app = new Application(new InMemoryStorage());
         $teamFoo = $app->createTeam('Foo');
         $teamBar = $app->createTeam('Bar');
         $date = new \DateTime('2018-02-24');

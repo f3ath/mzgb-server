@@ -7,6 +7,13 @@ use Ramsey\Uuid\Uuid;
 
 class Application
 {
+    private $storage;
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
+
     public function createTeam(string $name): string
     {
         $team = new Team(Uuid::uuid4()->toString(), $name);
