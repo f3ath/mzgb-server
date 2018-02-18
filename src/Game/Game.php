@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer\Game;
+namespace F3\Mzgb\Game;
 
-use F3\MzgbServer\Game\Row;
-use F3\MzgbServer\Game\Score\CompareByRank;
-use F3\MzgbServer\Game\Score\HigherThan;
-use F3\MzgbServer\Game\Score\Score;
+use F3\Mzgb\Game\Row;
+use F3\Mzgb\Game\Score\CompareByRank;
+use F3\Mzgb\Game\Score\HigherThan;
+use F3\Mzgb\Game\Score\Score;
 
 class Game
 {
@@ -47,7 +47,7 @@ class Game
 
     public function score(Team $team, int $tour, array $points): void
     {
-        $this->scores[$team->toId()]->score($tour, $points);
+        $this->scores[$team->toId()]->addPoints($tour, $points);
     }
 
     public function countScoresHigherThan(Score $score): int

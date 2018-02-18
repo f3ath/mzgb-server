@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer;
+namespace F3\Mzgb;
 
-use F3\MzgbServer\Application\ScoreBoardRowToArrayMapper;
-use F3\MzgbServer\Application\Storage;
-use F3\MzgbServer\Game\Game;
-use F3\MzgbServer\Game\Team;
+use F3\Mzgb\Application\ScoreBoardRowToArrayMapper;
+use F3\Mzgb\Application\Storage;
+use F3\Mzgb\Game\Game;
+use F3\Mzgb\Game\Team;
 use Ramsey\Uuid\Uuid;
 
 class Application
@@ -39,6 +39,19 @@ class Application
         $game->register($team);
     }
 
+    public function score(string $game_id, int $tour, string $team_id, array $score): void
+    {
+        $game = $this->getGame($game_id);
+        $team = $this->getTeam($team_id);
+        $game->score($team, $tour, $score);
+    }
+
+    public function getScoreBoard(string $game_id): array
+    {
+        $game = $this->getGame($game_id);
+        return array_map(new ScoreBoardRowToArrayMapper(), $game->toScoreBoard());
+    }
+
     private function getGame(string $game_id): Game
     {
         $game = $this->storage->getGame($game_id);
@@ -55,18 +68,5 @@ class Application
             return $team;
         }
         throw new \OutOfBoundsException();
-    }
-
-    public function score(string $game_id, int $tour, string $team_id, array $score): void
-    {
-        $game = $this->getGame($game_id);
-        $team = $this->getTeam($team_id);
-        $game->score($team, $tour, $score);
-    }
-
-    public function getScoreBoard(string $game_id): array
-    {
-        $game = $this->getGame($game_id);
-        return array_map(new ScoreBoardRowToArrayMapper(), $game->toScoreBoard());
     }
 }

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer\Application;
+namespace F3\Mzgb\Application;
 
-use F3\MzgbServer\Game\Score\Score;
+use F3\Mzgb\Game\Score\Score;
 
 class ScoreBoardRowToArrayMapper
 {

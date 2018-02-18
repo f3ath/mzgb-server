@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer\Application;
+namespace F3\Mzgb\Application;
 
-use F3\MzgbServer\Game\Game;
-use F3\MzgbServer\Game\Team;
+use F3\Mzgb\Game\Game;
+use F3\Mzgb\Game\Team;
 
 interface Storage
 {

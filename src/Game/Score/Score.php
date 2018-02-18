@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer\Game\Score;
+namespace F3\Mzgb\Game\Score;
 
-use F3\MzgbServer\Game\Game;
-use F3\MzgbServer\Game\Team;
+use F3\Mzgb\Game\Game;
+use F3\Mzgb\Game\Team;
 
 class Score
 {
@@ -18,7 +18,7 @@ class Score
         $this->game = $game;
     }
 
-    public function score(int $tour, array $points): void
+    public function addPoints(int $tour, array $points): void
     {
         $this->points[$tour] = array_sum($points);
     }
@@ -47,5 +47,4 @@ class Score
     {
         return $this->game->countScoresHigherThan($this) + 1;
     }
-
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace F3\MzgbServer\Test;
+namespace F3\Mzgb\Test;
 
-use F3\MzgbServer\Game\Game;
-use F3\MzgbServer\Application\Storage;
-use F3\MzgbServer\Game\Team;
+use F3\Mzgb\Application;
+use F3\Mzgb\Application\Storage;
+use F3\Mzgb\Game\Game;
+use F3\Mzgb\Game\Team;
 use PHPUnit\Framework\TestCase;
-use F3\MzgbServer\Application;
 
 class InMemoryStorage implements Storage
 {

@@ -18,8 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-          "F3\\MzgbServer\\": "src/",
-          "F3\\MzgbServer\\Test\\": "test/"
+          "F3\\Mzgb\\": "src/",
+          "F3\\Mzgb\\Test\\": "test/"
         }
     }
 }
