@@ -13,12 +13,12 @@ class InMemoryStorage implements Storage
     private $games = [];
     private $teams = [];
 
-    public function getGame($game_id): ?Game
+    public function getGame($game_id): Game
     {
-        return $this->games[$game_id] ?? null;
+        return $this->games[$game_id];
     }
 
-    public function getTeam($team_id): ?Team
+    public function getTeam($team_id): Team
     {
         return $this->teams[$team_id];
     }

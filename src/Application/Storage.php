@@ -8,9 +8,9 @@ use F3\Mzgb\Game\Team;
 
 interface Storage
 {
-    public function getGame($game_id): ?Game;
+    public function getGame($game_id): Game;
 
-    public function getTeam($team_id): ?Team;
+    public function getTeam($team_id): Team;
 
     public function persistGame(Game $game): void;
 

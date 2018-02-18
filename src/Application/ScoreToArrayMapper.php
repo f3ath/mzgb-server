@@ -5,7 +5,7 @@ namespace F3\Mzgb\Application;
 
 use F3\Mzgb\Game\Score\Score;
 
-class ScoreBoardRowToArrayMapper
+class ScoreToArrayMapper
 {
     public function __invoke(Score $score): array
     {
