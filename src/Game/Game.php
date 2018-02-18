@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace F3\Mzgb\Game;
 
-use F3\Mzgb\Game\Row;
 use F3\Mzgb\Game\Score\CompareByRank;
 use F3\Mzgb\Game\Score\HigherThan;
 use F3\Mzgb\Game\Score\Score;

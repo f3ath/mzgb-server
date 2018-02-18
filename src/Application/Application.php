@@ -1,10 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\Mzgb;
+namespace F3\Mzgb\Application;
 
-use F3\Mzgb\Application\ScoreBoardRowToArrayMapper;
-use F3\Mzgb\Application\Storage;
 use F3\Mzgb\Game\Game;
 use F3\Mzgb\Game\Team;
 use Ramsey\Uuid\Uuid;

@@ -2,7 +2,7 @@
 
 namespace F3\Mzgb\Test;
 
-use F3\Mzgb\Application;
+use F3\Mzgb\Application\Application;
 use F3\Mzgb\Application\Storage;
 use F3\Mzgb\Game\Game;
 use F3\Mzgb\Game\Team;
