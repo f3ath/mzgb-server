@@ -1,0 +1,25 @@
+{
+    "name": "f3ath/mzgb-server",
+    "description": "mzgb-server",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Karapetov",
+            "email": "karapetov@gmail.com"
+        }
+    ],
+    "require": {
+      "php": "^7.2",
+        "ramsey/uuid": "^3.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "F3\\MzgbServer\\": "src/",
+          "F3\\MzgbServer\\Test\\": "test/"
+        }
+    }
+}
