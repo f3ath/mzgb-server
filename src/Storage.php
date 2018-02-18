@@ -10,4 +10,6 @@ interface Storage
     public function getTeam($team_id): ?Team;
 
     public function persistGame(Game $game): void;
+
+    public function persistTeam(Team $team): void;
 }

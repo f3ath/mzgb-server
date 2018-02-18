@@ -11,6 +11,7 @@ use F3\MzgbServer\Application;
 class InMemoryStorage implements Storage
 {
     private $games = [];
+    private $teams = [];
 
     public function getGame($game_id): ?Game
     {
@@ -19,12 +20,17 @@ class InMemoryStorage implements Storage
 
     public function getTeam($team_id): ?Team
     {
-        return null;
+        return $this->teams[$team_id];
     }
 
     public function persistGame(Game $game): void
     {
         $this->games[$game->toId()] = $game;
+    }
+
+    public function persistTeam(Team $team): void
+    {
+        $this->teams[$team->toId()] = $team;
     }
 }
 

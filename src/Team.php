@@ -18,4 +18,9 @@ class Team
     {
         return $this->id;
     }
+
+    public function toName(): string
+    {
+        return $this->name;
+    }
 }
