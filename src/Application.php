@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace F3\MzgbServer;
 
+use F3\MzgbServer\Application\ScoreBoardRowToArrayMapper;
 use Ramsey\Uuid\Uuid;
 
 class Application
@@ -46,30 +47,6 @@ class Application
         if (!$game) {
             throw new \OutOfBoundsException();
         }
-        return array_map(
-            function(ScoreBoardRow $row) {
-                return [
-                    'team' => $row->toTeamName(),
-                    'rank' => $row->toRank(),
-                    'score' => $row->toTotalScore(),
-                    'tours' => $row->toScoreByTours()
-                ];
-            },
-            $game->toScoreBoard()
-        );
-//        return [
-//            [
-//                'team' => 'Bar',
-//                'rank' => 1,
-//                'score' => 14,
-//                'tours' => [2, 2, 2, 2, 2, 2, 2]
-//            ],
-//            [
-//                'team' => 'Foo',
-//                'rank' => 2,
-//                'score' => 7,
-//                'tours' => [1, 1, 1, 1, 1, 1, 1]
-//            ],
-//        ];
+        return array_map(new ScoreBoardRowToArrayMapper(), $game->toScoreBoard());
     }
 }
