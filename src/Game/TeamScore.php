@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace F3\MzgbServer\Game;
 
-use F3\MzgbServer\Game\Team;
-
 class TeamScore
 {
     private $points = [];
     private $team;
+    private $game;
 
-    public function __construct(Team $team)
+    public function __construct(Team $team, Game $game)
     {
         $this->team = $team;
+        $this->game = $game;
     }
 
     public function score(int $tour, array $points): void
@@ -39,4 +39,10 @@ class TeamScore
     {
         return $this->team->toName();
     }
+
+    public function toRank(): int
+    {
+        return $this->game->countScoresHigherThan($this) + 1;
+    }
+
 }

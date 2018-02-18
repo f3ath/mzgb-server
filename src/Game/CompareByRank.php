@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace F3\MzgbServer\Game;
 
-class CompareRowsByRank
+class CompareByRank
 {
-    public function __invoke(Row $a, Row $b): int
+    public function __invoke(TeamScore $a, TeamScore $b): int
     {
         return $a->toRank() <=> $b->toRank();
     }

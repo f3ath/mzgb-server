@@ -3,17 +3,17 @@ declare(strict_types=1);
 
 namespace F3\MzgbServer\Application;
 
-use F3\MzgbServer\Game\Row;
+use F3\MzgbServer\Game\TeamScore;
 
 class ScoreBoardRowToArrayMapper
 {
-    public function __invoke(Row $row): array
+    public function __invoke(TeamScore $score): array
     {
         return [
-            'team' => $row->toTeamName(),
-            'rank' => $row->toRank(),
-            'score' => $row->toTotalScore(),
-            'tours' => $row->toScoreByTours()
+            'team' => $score->toTeamName(),
+            'rank' => $score->toRank(),
+            'score' => $score->total(),
+            'tours' => array_values($score->pointsByTour())
         ];
     }
 }

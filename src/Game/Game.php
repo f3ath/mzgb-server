@@ -39,7 +39,7 @@ class Game
 
     public function register(Team $team): void
     {
-        $this->scores[$team->toId()] = new TeamScore($team);
+        $this->scores[$team->toId()] = new TeamScore($team, $this);
     }
 
     public function score(Team $team, int $tour, array $points): void
@@ -47,15 +47,15 @@ class Game
         $this->scores[$team->toId()]->score($tour, $points);
     }
 
-    public function rank(TeamScore $score): int
+    public function countScoresHigherThan(TeamScore $score): int
     {
-        return count(array_filter($this->scores, new IsHigherThan($score))) + 1;
+        return count(array_filter($this->scores, new IsHigherThan($score)));
     }
 
     public function toScoreBoard(): array
     {
-        $rows = array_map(new MapScoreToRow($this), $this->scores);
-        usort($rows, new CompareRowsByRank());
-        return $rows;
+        $scores = $this->scores;
+        usort($scores, new CompareByRank());
+        return $scores;
     }
 }
