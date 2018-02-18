@@ -4,15 +4,27 @@ namespace F3\MzgbServer\Test;
 
 use F3\MzgbServer\Game;
 use F3\MzgbServer\Storage;
+use F3\MzgbServer\Team;
 use PHPUnit\Framework\TestCase;
 use F3\MzgbServer\Application;
 
 class InMemoryStorage implements Storage
 {
+    private $games = [];
 
     public function getGame($game_id): ?Game
     {
+        return $this->games[$game_id] ?? null;
+    }
+
+    public function getTeam($team_id): ?Team
+    {
         return null;
+    }
+
+    public function persistGame(Game $game): void
+    {
+        $this->games[$game->toId()] = $game;
     }
 }
 
@@ -46,7 +58,7 @@ class ApplicationTest extends TestCase
         $app->score($game, 7, $teamBar, [1, 2, -2, 0, 0, 0, 1]); // 2
         // Total score: 14
 
-        $table = $app->getTable($game);
+        $board = $app->getScoreBoard($game);
         $this->assertEquals(
             [
                 [
@@ -62,7 +74,7 @@ class ApplicationTest extends TestCase
                     'tours' => [1, 1, 1, 1, 1, 1, 1]
                 ],
             ],
-            $table
+            $board
         );
 
     }

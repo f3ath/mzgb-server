@@ -30,4 +30,12 @@ class Game
     {
         return $this->id;
     }
+
+    public function toScoreBoard(): array
+    {
+        return [
+            new ScoreBoardRow('Bar', 1, [2, 2, 2, 2, 2, 2, 2]),
+            new ScoreBoardRow('Foo', 2, [1, 1, 1, 1, 1, 1, 1]),
+        ];
+    }
 }
