@@ -49,10 +49,7 @@ class Game
 
     public function rank(TeamScore $score): int
     {
-        $filterHigher = function (TeamScore $item) use ($score) {
-            return $item->isHigherThan($score);
-        };
-        return count(array_filter($this->scores, $filterHigher)) + 1;
+        return count(array_filter($this->scores, new IsHigherThan($score))) + 1;
     }
 
     public function toScoreBoard(): array
