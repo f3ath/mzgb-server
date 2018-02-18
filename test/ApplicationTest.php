@@ -2,6 +2,7 @@
 
 namespace F3\MzgbServer\Test;
 
+use F3\MzgbServer\Game;
 use F3\MzgbServer\Storage;
 use PHPUnit\Framework\TestCase;
 use F3\MzgbServer\Application;
@@ -9,6 +10,10 @@ use F3\MzgbServer\Application;
 class InMemoryStorage implements Storage
 {
 
+    public function getGame($game_id): ?Game
+    {
+        return null;
+    }
 }
 
 class ApplicationTest extends TestCase

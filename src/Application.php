@@ -26,8 +26,10 @@ class Application
         return $game->toId();
     }
 
-    public function register(string $team, string $game)
+    public function register(string $team_id, string $game_id)
     {
+        $game = $this->storage->getGame($game_id);
+
     }
 
     public function score(string $game, int $tour, string $team, array $score)

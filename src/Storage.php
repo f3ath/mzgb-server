@@ -5,5 +5,5 @@ namespace F3\MzgbServer;
 
 interface Storage
 {
-
+    public function getGame($game_id): ?Game;
 }
