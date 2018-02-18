@@ -2,9 +2,9 @@
 
 namespace F3\MzgbServer\Test;
 
-use F3\MzgbServer\Game;
-use F3\MzgbServer\Storage;
-use F3\MzgbServer\Team;
+use F3\MzgbServer\Game\Game;
+use F3\MzgbServer\Application\Storage;
+use F3\MzgbServer\Game\Team;
 use PHPUnit\Framework\TestCase;
 use F3\MzgbServer\Application;
 

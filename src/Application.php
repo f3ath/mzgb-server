@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace F3\MzgbServer;
 
 use F3\MzgbServer\Application\ScoreBoardRowToArrayMapper;
+use F3\MzgbServer\Application\Storage;
+use F3\MzgbServer\Game\Game;
+use F3\MzgbServer\Game\Team;
 use Ramsey\Uuid\Uuid;
 
 class Application

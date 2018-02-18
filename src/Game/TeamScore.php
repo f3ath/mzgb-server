@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer;
+namespace F3\MzgbServer\Game;
+
+use F3\MzgbServer\Game\Team;
 
 class TeamScore
 {

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer;
+namespace F3\MzgbServer\Game;
 
+use F3\MzgbServer\Game\Row;
 
 class Game
 {
@@ -56,18 +57,8 @@ class Game
 
     public function toScoreBoard(): array
     {
-        $game = $this;
-        $makeBoardRow = function (TeamScore $score) use ($game) {
-            return new ScoreBoardRow(
-                $score->toTeamName(),
-                $game->rank($score),
-                array_values($score->pointsByTour())
-            );
-        };
-        $rows = array_map($makeBoardRow, $this->scores);
-        usort($rows, function (ScoreBoardRow $a, ScoreBoardRow $b) {
-            return $a->toRank() <=> $b->toRank();
-        });
+        $rows = array_map(new MapScoreToRow($this), $this->scores);
+        usort($rows, new CompareRowsByRank());
         return $rows;
     }
 }

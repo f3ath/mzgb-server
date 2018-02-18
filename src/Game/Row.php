@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\MzgbServer;
+namespace F3\MzgbServer\Game;
 
-
-class ScoreBoardRow
+class Row
 {
     /**
      * @var string
