@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace F3\Mzgb\Game\Score;
-
-use F3\Mzgb\Game\Tour;
+namespace F3\Mzgb\Game;
 
 class Score
 {

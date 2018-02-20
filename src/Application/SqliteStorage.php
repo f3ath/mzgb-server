@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace F3\Mzgb\Application;
 
 use F3\Mzgb\Game\Game;
-use F3\Mzgb\Game\Score\TourResult;
 use F3\Mzgb\Game\Team;
 use F3\Mzgb\Game\Tour;
+use F3\Mzgb\Game\TourResult;
 
 class SqliteStorage implements Storage
 {

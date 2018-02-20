@@ -7,10 +7,10 @@ namespace F3\Mzgb\Application;
 use F3\Mzgb\Application\ScoreBoard\Board;
 use F3\Mzgb\Application\ScoreBoard\Row;
 use F3\Mzgb\Game\Game;
-use F3\Mzgb\Game\Score\Score;
-use F3\Mzgb\Game\Score\TourResult;
+use F3\Mzgb\Game\Score;
 use F3\Mzgb\Game\Team;
 use F3\Mzgb\Game\Tour;
+use F3\Mzgb\Game\TourResult;
 use Ramsey\Uuid\Uuid;
 
 class Application

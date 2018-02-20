@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace F3\Mzgb\Application\ScoreBoard;
 
-use F3\Mzgb\Game\Score\Score;
+use F3\Mzgb\Game\Score;
 
 class Row
 {

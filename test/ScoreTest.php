@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace F3\Mzgb\Test;
 
-use F3\Mzgb\Game\Score\Score;
-use F3\Mzgb\Game\Score\TourResult;
+use F3\Mzgb\Game\Score;
 use F3\Mzgb\Game\Tour;
+use F3\Mzgb\Game\TourResult;
 use PHPUnit\Framework\TestCase;
 
 class ScoreTest extends TestCase
