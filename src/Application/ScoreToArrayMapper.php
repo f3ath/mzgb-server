@@ -10,9 +10,9 @@ class ScoreToArrayMapper
     public function __invoke(Score $score): array
     {
         return [
-            'team' => $score->toTeamName(),
-            'rank' => $score->toRank(),
-            'score' => $score->toPointsTotal(),
+            'team' => $score->getTeamName(),
+            'rank' => $score->rankInBoard(),
+            'score' => $score->total(),
             'tours' => array_values($score->pointsByTour())
         ];
     }

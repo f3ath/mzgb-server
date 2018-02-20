@@ -3,24 +3,17 @@ declare(strict_types=1);
 
 namespace F3\Mzgb\Game\Score;
 
-use F3\Mzgb\Game\Game;
-use F3\Mzgb\Game\Team;
+use F3\Mzgb\Game\Tour;
 
 class Score
 {
     private $points = [];
-    private $team;
-    private $game;
 
-    public function __construct(Team $team, Game $game)
+    public function __construct(TourResult ...$results)
     {
-        $this->team = $team;
-        $this->game = $game;
-    }
-
-    public function addPoints(int $tour, array $points): void
-    {
-        $this->points[$tour] = array_sum($points);
+        foreach ($results as $result) {
+            $this->points[$result->tourNumber()] = $result->pointsTotal();
+        }
     }
 
     public function pointsByTour(): array
@@ -28,23 +21,28 @@ class Score
         return $this->points;
     }
 
-    public function isHigherThan(Score $that): bool
-    {
-        return $this->toPointsTotal() > $that->toPointsTotal();
-    }
-
-    public function toPointsTotal()
+    public function total(): int
     {
         return array_sum($this->points);
     }
 
-    public function toTeamName(): string
+    public function isHigherThan(Score $that): bool
     {
-        return $this->team->toName();
+        if ($this->total() > $that->total()) {
+            return true;
+        }
+        if ($this->total() < $that->total()) {
+            return false;
+        }
+        $tour = Tour::MAX_NUMBER;
+        while (Tour::isValid($tour) && $this->pointsIn($tour) === $that->pointsIn($tour)) {
+            $tour--;
+        }
+        return $this->pointsIn($tour) > $that->pointsIn($tour);
     }
 
-    public function toRank(): int
+    private function pointsIn(int $tour): int
     {
-        return $this->game->countScoresHigherThan($this) + 1;
+        return $this->points[$tour] ?? 0;
     }
 }

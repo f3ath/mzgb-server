@@ -3,85 +3,155 @@
 namespace F3\Mzgb\Test;
 
 use F3\Mzgb\Application\Application;
-use F3\Mzgb\Application\Storage;
-use F3\Mzgb\Game\Game;
-use F3\Mzgb\Game\Team;
+use F3\Mzgb\Application\SqliteStorage;
 use PHPUnit\Framework\TestCase;
-
-class InMemoryStorage implements Storage
-{
-    private $games = [];
-    private $teams = [];
-
-    public function getGame($game_id): Game
-    {
-        return $this->games[$game_id];
-    }
-
-    public function getTeam($team_id): Team
-    {
-        return $this->teams[$team_id];
-    }
-
-    public function persistGame(Game $game): void
-    {
-        $this->games[$game->toId()] = $game;
-    }
-
-    public function persistTeam(Team $team): void
-    {
-        $this->teams[$team->toId()] = $team;
-    }
-}
 
 class ApplicationTest extends TestCase
 {
-    public function testFullGame()
+    private $db;
+
+    protected function setUp()
     {
-        $app = new Application(new InMemoryStorage());
-        $teamFoo = $app->createTeam('Foo');
-        $teamBar = $app->createTeam('Bar');
-        $date = new \DateTime('2018-02-24');
-        $game = $app->createGame($date, 'Test Game');
-        $app->register($teamFoo, $game);
-        $app->register($teamBar, $game);
+        $this->db = tempnam(sys_get_temp_dir(), 'php');
+        $this->getStorage()->install();
+    }
 
-        $app->score($game, 1, $teamFoo, [1, 0, 0, 0, 0, 0, 0]); // 1
-        $app->score($game, 2, $teamFoo, [0, 1, 0, 0, 0, 0, 0]); // 1
-        $app->score($game, 3, $teamFoo, [0, 0, 1, 0, 0, 0, 0]); // 1
-        $app->score($game, 4, $teamFoo, [0, 0, 0, 1, 0, 0, 0]); // 1
-        $app->score($game, 5, $teamFoo, [0, 0, 0, 0, 1, 0, 0]); // 1
-        $app->score($game, 6, $teamFoo, [0, 0, 0, 0, 0, 1, 0]); // 1
-        $app->score($game, 7, $teamFoo, [1, 2, -2, 0, 0, 0, 0]); // 1
-        // Total score: 7
+    protected function tearDown()
+    {
+        unlink($this->db);
+    }
 
-        $app->score($game, 1, $teamBar, [1, 0, 0, 0, 0, 0, 1]); // 2
-        $app->score($game, 2, $teamBar, [0, 1, 0, 0, 0, 0, 1]); // 2
-        $app->score($game, 3, $teamBar, [0, 0, 1, 0, 0, 0, 1]); // 2
-        $app->score($game, 4, $teamBar, [0, 0, 0, 1, 0, 0, 1]); // 2
-        $app->score($game, 5, $teamBar, [0, 0, 0, 0, 1, 0, 1]); // 2
-        $app->score($game, 6, $teamBar, [0, 0, 0, 0, 0, 1, 1]); // 2
-        $app->score($game, 7, $teamBar, [1, 2, -2, 0, 0, 0, 1]); // 2
-        // Total score: 14
+    public function testRegistrationList()
+    {
+        $teamFoo = $this->getApp()->createTeam('Foo');
+        $teamBar = $this->getApp()->createTeam('Bar');
+        $game = $this->getApp()->createGame('Test Game');
+        $this->getApp()->createRegistration($teamFoo, $game);
+        $this->getApp()->createRegistration($teamBar, $game);
 
-        $board = $app->getScoreBoard($game);
+        $reg_list = $this->getApp()->getRegistrationList($game);
+
         $this->assertEquals(
             [
-                [
-                    'team' => 'Bar',
-                    'rank' => 1,
-                    'score' => 14,
-                    'tours' => [2, 2, 2, 2, 2, 2, 2]
-                ],
-                [
-                    'team' => 'Foo',
-                    'rank' => 2,
-                    'score' => 7,
-                    'tours' => [1, 1, 1, 1, 1, 1, 1]
-                ],
+                'game' => 'Test Game',
+                'teams' => [
+                    'Foo',
+                    'Bar'
+                ]
             ],
-            $board
+            $reg_list
+        );
+    }
+
+    public function testFullGame()
+    {
+        $teamFoo = $this->getApp()->createTeam('Foo');
+        $teamBar = $this->getApp()->createTeam('Bar');
+        $game_id = $this->getApp()->createGame('Test Game');
+
+        $this->getApp()->createRegistration($teamFoo, $game_id);
+        $this->getApp()->createRegistration($teamBar, $game_id);
+
+        $this->assertNotEmpty($this->getApp()->getScoreBoard($game_id));
+
+        $this->getApp()->savePoints($game_id, $teamFoo, 1, [1, 0, 0, 0, 0, 0, 0]); // 1
+        $this->getApp()->savePoints($game_id, $teamFoo, 2, [0, 1, 0, 0, 0, 0, 0]); // 1
+        $this->getApp()->savePoints($game_id, $teamFoo, 3, [0, 0, 1, 0, 0, 0, 0]); // 1
+
+        $this->getApp()->savePoints($game_id, $teamBar, 1, [1, 0, 0, 0, 0, 0, 1]); // 2
+        $this->getApp()->savePoints($game_id, $teamBar, 2, [0, 1, 0, 0, 0, 0, 1]); // 2
+        $this->getApp()->savePoints($game_id, $teamBar, 3, [0, 0, 1, 0, 0, 0, 1]); // 2
+
+        $this->assertEquals(
+            [
+                'game' => 'Test Game',
+                'board' => [
+                    [
+                        'team' => 'Bar',
+                        'rank' => 1,
+                        'score' => 6,
+                        'tours' => [1 => 2, 2 => 2, 3 => 2]
+                    ],
+                    [
+                        'team' => 'Foo',
+                        'rank' => 2,
+                        'score' => 3,
+                        'tours' => [1 => 1, 2 => 1, 3 => 1]
+                    ],
+                ]
+            ],
+            $this->getApp()->getScoreBoard($game_id)
         );
 
+        $this->getApp()->savePoints($game_id, $teamFoo, 4, [0, 0, 0, 1, 0, 0, 1]); // 2
+        $this->getApp()->savePoints($game_id, $teamFoo, 5, [0, 0, 0, 0, 1, 0, 1]); // 2
+        $this->getApp()->savePoints($game_id, $teamFoo, 6, [0, 0, 0, 0, 0, 1, 1]); // 2
+
+        $this->getApp()->savePoints($game_id, $teamBar, 4, [0, 0, 0, 1, 0, 0, 0]); // 1
+        $this->getApp()->savePoints($game_id, $teamBar, 5, [0, 0, 0, 0, 1, 0, 0]); // 1
+        $this->getApp()->savePoints($game_id, $teamBar, 6, [0, 0, 0, 0, 0, 1, 0]); // 1
+
+        $this->assertEquals(
+            [
+                'game' => 'Test Game',
+                'board' => [
+                    [
+                        'team' => 'Foo',
+                        'rank' => 1,
+                        'score' => 9,
+                        'tours' => [1 => 1, 2 => 1, 3 => 1, 4 => 2, 5 => 2, 6 => 2]
+                    ],
+                    [
+                        'team' => 'Bar',
+                        'rank' => 2,
+                        'score' => 9,
+                        'tours' => [1 => 2, 2 => 2, 3 => 2, 4 => 1, 5 => 1, 6 => 1]
+                    ],
+                ]
+            ],
+            $this->getApp()->getScoreBoard($game_id)
+        );
+
+        $this->getApp()->savePoints($game_id, $teamFoo, 7, [1, 2, -2, 0, 0, 0, 0]); // 1
+        $this->getApp()->savePoints($game_id, $teamBar, 7, [1, 2, -2, 0, 0, 0, 1]); // 2
+
+        $this->assertEquals(
+            [
+                'game' => 'Test Game',
+                'board' => [
+                    [
+                        'team' => 'Bar',
+                        'rank' => 1,
+                        'score' => 11,
+                        'tours' => [1 => 2, 2 => 2, 3 => 2, 4 => 1, 5 => 1, 6 => 1, 7 => 2]
+                    ],
+                    [
+                        'team' => 'Foo',
+                        'rank' => 2,
+                        'score' => 10,
+                        'tours' => [1 => 1, 2 => 1, 3 => 1, 4 => 2, 5 => 2, 6 => 2, 7 => 1]
+                    ],
+                ]
+            ],
+            $this->getApp()->getScoreBoard($game_id)
+        );
+
+    }
+
+    private function getApp(): Application
+    {
+        return new Application(
+            $this->getStorage()
+        );
+    }
+
+    /**
+     * @return SqliteStorage
+     */
+    private function getStorage(): SqliteStorage
+    {
+        return new SqliteStorage(
+            new \PDO("sqlite:{$this->db}", null, null, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION])
+        );
     }
 }

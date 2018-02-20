@@ -14,12 +14,12 @@ class Team
         $this->name = $name;
     }
 
-    public function toId(): string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function toName(): string
+    public function name(): string
     {
         return $this->name;
     }
